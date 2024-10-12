@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Grafica Sostituzioni Rugby</title>
+    <style>
+        /* Stile per la grafica delle sostituzioni */
+        body {
+            font-family: Arial, sans-serif;
+            background: rgba(255, 255, 255, 0); /* Sfondo trasparente */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .overlay {
+            display: none; /* Inizialmente nascosta */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Sfondo dell'overlay */
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease; /* Animazione di transizione */
+        }
+
+        .overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .overlay.hide {
+            opacity: 0;
+            pointer-events: none; /* Non permette di interagire quando è nascosta */
+        }
+
+        .substitution-box {
+            background: #FFA500; /* Colore arancione */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.5s ease-out; /* Animazione di entrata */
+            text-align: center; /* Allineamento del testo al centro */
+        }
+
+        .player-info {
+            display: flex;
+            justify-content: space-between; /* Spaziatura tra i rettangoli */
+            align-items: center; /* Allineamento verticale */
+            margin: 10px 0; /* Margine tra i rettangoli */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .incoming {
+            background: #28a745; /* Verde per entrante */
+            color: black; /* Testo nero */
+        }
+
+        .outgoing {
+            background: #dc3545; /* Rosso per uscente */
+            color: black; /* Testo nero */
+        }
+
+        .arrow {
+            width: 20px; /* Larghezza delle frecce */
+            height: 20px; /* Altezza delle frecce */
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay">
+        <div class="substitution-box">
+            <h1>Sostituzione Giocatore</h1>
+            <div class="player-info incoming">
+                <span id="incoming-player">Nome Giocatore Entrante</span>
+                <img src="arrow_up_green.png" alt="Freccia Entrante" class="arrow">
+            </div>
+            <div class="player-info outgoing">
+                <span id="outgoing-player">Nome Giocatore Uscente</span>
+                <img src="arrow_down_red.png" alt="Freccia Uscente" class="arrow">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funzione per aggiornare la grafica
+        function updateGraphic() {
+            const outPlayer = localStorage.getItem('outPlayer');
+            const inPlayer = localStorage.getItem('inPlayer');
+            const graphicVisible = localStorage.getItem('graphicVisible') === 'true';
+
+            const overlay = document.getElementById('overlay');
+            if (graphicVisible) {
+                document.getElementById('incoming-player').textContent = inPlayer || "Nome Giocatore Entrante";
+                document.getElementById('outgoing-player').textContent = outPlayer || "Nome Giocatore Uscente";
+
+                overlay.classList.remove('hide');
+                overlay.classList.add('show');
+            } else {
+                overlay.classList.remove('show');
+                overlay.classList.add('hide');
+            }
+        }
+
+        // Funzione per controllare le modifiche nel localStorage
+        function monitorLocalStorage() {
+            let lastGraphicVisible = localStorage.getItem('graphicVisible');
+
+            setInterval(() => {
+                const currentGraphicVisible = localStorage.getItem('graphicVisible');
+                if (currentGraphicVisible !== lastGraphicVisible) {
+                    lastGraphicVisible = currentGraphicVisible;
+                    updateGraphic(); // Aggiorna la grafica se ci sono modifiche
+                }
+                updateGraphic(); // Controlla anche i dati per aggiornamenti
+            }, 1000); // Controlla ogni secondo
+        }
+
+        // Inizializza il monitoraggio
+        monitorLocalStorage();
+        updateGraphic(); // Aggiorna la grafica all'apertura della pagina
+    </script>
+</body>
+</html>

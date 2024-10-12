@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller Sostituzioni Rugby</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* Colore per il giocatore uscente */
+        #outPlayer, #outNumber {
+            background-color: #ffcccc; /* Rosso chiaro */
+        }
+        /* Colore per il giocatore entrante */
+        #inPlayer, #inNumber {
+            background-color: #ccffcc; /* Verde chiaro */
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Controller Sostituzioni Rugby</h1>
+    <label for="outPlayer">Giocatore Uscente:</label>
+    <input type="text" id="outPlayer" placeholder="Nome Giocatore Uscente" />
+    
+    <label for="outNumber">Numero Uscente:</label>
+    <input type="number" id="outNumber" placeholder="Numero Giocatore Uscente" />
+
+    <label for="inPlayer">Giocatore Entrante:</label>
+    <input type="text" id="inPlayer" placeholder="Nome Giocatore Entrante" />
+
+    <label for="inNumber">Numero Entrante:</label>
+    <input type="number" id="inNumber" placeholder="Numero Giocatore Entrante" />
+
+    <label for="toggleGraphic">Mostra Grafica:</label>
+    <input type="checkbox" id="toggleGraphic" />
+
+    <script>
+        // Aggiorna localStorage quando i valori cambiano
+        document.getElementById('outPlayer').addEventListener('input', (e) => {
+            localStorage.setItem('outPlayer', e.target.value);
+        });
+
+        document.getElementById('outNumber').addEventListener('input', (e) => {
+            localStorage.setItem('outNumber', e.target.value);
+        });
+
+        document.getElementById('inPlayer').addEventListener('input', (e) => {
+            localStorage.setItem('inPlayer', e.target.value);
+        });
+
+        document.getElementById('inNumber').addEventListener('input', (e) => {
+            localStorage.setItem('inNumber', e.target.value);
+        });
+
+        // Mostra/nascondi la grafica in base allo slider
+        document.getElementById('toggleGraphic').addEventListener('change', (e) => {
+            localStorage.setItem('graphicVisible', e.target.checked);
+        });
+
+        // Inizializza i valori nel form al caricamento
+        window.onload = () => {
+            document.getElementById('outPlayer').value = localStorage.getItem('outPlayer') || '';
+            document.getElementById('outNumber').value = localStorage.getItem('outNumber') || '';
+            document.getElementById('inPlayer').value = localStorage.getItem('inPlayer') || '';
+            document.getElementById('inNumber').value = localStorage.getItem('inNumber') || '';
+            document.getElementById('toggleGraphic').checked = localStorage.getItem('graphicVisible') === 'true';
+        };
+    </script>
+</body>
+</html>
